@@ -104,6 +104,11 @@
                             </a>
                         </li>
                                                                                 <li class=" visible-xs-block">
+                            <a href="https://thecodingmachine.github.io/tdbm/doc/install_symfony.html">
+                                Install in Symfony
+                            </a>
+                        </li>
+                                                                                <li class=" visible-xs-block">
                             <a href="https://thecodingmachine.github.io/tdbm/doc/install_silex.html">
                                 Install in Silex
                             </a>
@@ -184,13 +189,33 @@
                             </a>
                         </li>
                                                                                 <li class=" visible-xs-block">
+                            <a href="https://thecodingmachine.github.io/tdbm/doc/compatibility.html">
+                                Databases compatibility
+                            </a>
+                        </li>
+                                                                                <li class=" visible-xs-block">
                             <a href="https://thecodingmachine.github.io/tdbm/doc/internals.html">
                                 TDBM internals
                             </a>
                         </li>
                                                                                 <li class=" visible-xs-block">
+                            <a href="https://thecodingmachine.github.io/tdbm/doc/customizing_code_generation.html">
+                                Customizing code generation
+                            </a>
+                        </li>
+                                                                                <li class=" visible-xs-block">
                             <a href="https://thecodingmachine.github.io/tdbm/doc/faq.html">
                                 Frequently asked questions
+                            </a>
+                        </li>
+                                                                                                                    <li class=" visible-xs-block">
+                            <a href="https://thecodingmachine.github.io/tdbm/doc/fluid_schema_builder.html">
+                                Fluid schema builder
+                            </a>
+                        </li>
+                                                                                <li class=" visible-xs-block">
+                            <a href="https://thecodingmachine.github.io/tdbm/doc/graphqlite.html">
+                                GraphQLite
                             </a>
                         </li>
                                                     <li><a href="http://www.thecodingmachine.com/">TheCodingMachine</a></li>
@@ -230,6 +255,11 @@
                                                                 <li class="">
                         <a href="https://thecodingmachine.github.io/tdbm/doc/install_lumen.html">
                             Install in Lumen
+                        </a>
+                    </li>
+                                                                <li class="">
+                        <a href="https://thecodingmachine.github.io/tdbm/doc/install_symfony.html">
+                            Install in Symfony
                         </a>
                     </li>
                                                                 <li class="">
@@ -319,13 +349,36 @@
                         </a>
                     </li>
                                                                 <li class="">
+                        <a href="https://thecodingmachine.github.io/tdbm/doc/compatibility.html">
+                            Databases compatibility
+                        </a>
+                    </li>
+                                                                <li class="">
                         <a href="https://thecodingmachine.github.io/tdbm/doc/internals.html">
                             TDBM internals
                         </a>
                     </li>
                                                                 <li class="">
+                        <a href="https://thecodingmachine.github.io/tdbm/doc/customizing_code_generation.html">
+                            Customizing code generation
+                        </a>
+                    </li>
+                                                                <li class="">
                         <a href="https://thecodingmachine.github.io/tdbm/doc/faq.html">
                             Frequently asked questions
+                        </a>
+                    </li>
+                                                                <li>
+                        <h4>Integrations and extensions</h4>
+                    </li>
+                                                                <li class="">
+                        <a href="https://thecodingmachine.github.io/tdbm/doc/fluid_schema_builder.html">
+                            Fluid schema builder
+                        </a>
+                    </li>
+                                                                <li class="">
+                        <a href="https://thecodingmachine.github.io/tdbm/doc/graphqlite.html">
+                            GraphQLite
                         </a>
                     </li>
                                     </ul>
@@ -345,7 +398,11 @@
         <div class="container pt100">
             <div class="row">
                 <div class="col-xs-12">
-                    <h1>Migration <small></small></h1>                    <h2 id="migrating-to-tdbm-43">Migrating to TDBM 4.3</h2>
+                    <h1>Migration <small></small></h1>                    <h2 id="migrating-to-tdbm-51">Migrating to TDBM 5.1</h2>
+<p>See <a href="https://github.com/thecodingmachine/tdbm/blob/master/changelog.html">Changelog</a></p>
+<h2 id="migrating-to-tdbm-50">Migrating to TDBM 5.0</h2>
+<p>See <a href="https://github.com/thecodingmachine/tdbm/blob/master/changelog.html">Changelog</a></p>
+<h2 id="migrating-to-tdbm-43">Migrating to TDBM 4.3</h2>
 <p>TDBM 4.3 changes considerably the way the TDBMService instance is configured since it features a brand new <code>Configuration</code> class.
 Hopefully, a new installer will smoothly migrate old installs to new one.</p>
 <p>When migrating from a TDBM &lt;=4.2 release, simply run the Mouf installer to update TDBM bindings.</p>
@@ -363,7 +420,7 @@ your database access code.</p>
 <li>There are no more getters and setters for foreign key ids. Instead, you can use the getters and setters of beans
 directly.</li>
 <li>All TDBM xxxFilters have been removed. They are replaced by pure SQL and the &quot;magic parameters&quot; mechanism.</li>
-<li>Many to many relationships are automatically detected. Pivot tables no more generate beans and DAOs.</li>
+<li>Many to many relationships are automatically detected. Association tables don't generate beans and DAOs anymore.</li>
 <li>Returned results are now objects that can be iterated. They implement the <code>porpaginas</code> interface: pagination is
 done on the result set rather than when calling the <code>getObjects/findObjects</code> method. As a result, the real query
 is performed when the result is first iterated and not when the <code>getObjects/findObjects</code> method is called.</li>
@@ -392,7 +449,7 @@ is performed when the result is first iterated and not when the <code>getObjects
         <footer class="row" id="footer">
             <div class="col-xs-12">
                 Made with <span class="pulse2 glyphicon glyphicon-heart" style="color: red" aria-hidden="true"></span><span class="sr-only">love</span> by <a href="https://www.thecodingmachine.com/"><img src="https://thecodingmachine.github.io/tdbm/img/logo.png" alt="TheCodingMachine"></a> for all open-source lovers
-                <span class="copyright">&copy; 2016 - 2018 <a href="https://www.thecodingmachine.com/">TheCodingMachine</a> - All Rights Reserved</span>
+                <span class="copyright">&copy; 2016 - 2025 <a href="https://www.thecodingmachine.com/">TheCodingMachine</a> - All Rights Reserved</span>
                 Powered by <a href="http://couscous.io/">Couscous</a></span>
             </div>
         </footer>

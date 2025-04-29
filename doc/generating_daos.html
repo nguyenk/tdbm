@@ -104,6 +104,11 @@
                             </a>
                         </li>
                                                                                 <li class=" visible-xs-block">
+                            <a href="https://thecodingmachine.github.io/tdbm/doc/install_symfony.html">
+                                Install in Symfony
+                            </a>
+                        </li>
+                                                                                <li class=" visible-xs-block">
                             <a href="https://thecodingmachine.github.io/tdbm/doc/install_silex.html">
                                 Install in Silex
                             </a>
@@ -184,13 +189,33 @@
                             </a>
                         </li>
                                                                                 <li class=" visible-xs-block">
+                            <a href="https://thecodingmachine.github.io/tdbm/doc/compatibility.html">
+                                Databases compatibility
+                            </a>
+                        </li>
+                                                                                <li class=" visible-xs-block">
                             <a href="https://thecodingmachine.github.io/tdbm/doc/internals.html">
                                 TDBM internals
                             </a>
                         </li>
                                                                                 <li class=" visible-xs-block">
+                            <a href="https://thecodingmachine.github.io/tdbm/doc/customizing_code_generation.html">
+                                Customizing code generation
+                            </a>
+                        </li>
+                                                                                <li class=" visible-xs-block">
                             <a href="https://thecodingmachine.github.io/tdbm/doc/faq.html">
                                 Frequently asked questions
+                            </a>
+                        </li>
+                                                                                                                    <li class=" visible-xs-block">
+                            <a href="https://thecodingmachine.github.io/tdbm/doc/fluid_schema_builder.html">
+                                Fluid schema builder
+                            </a>
+                        </li>
+                                                                                <li class=" visible-xs-block">
+                            <a href="https://thecodingmachine.github.io/tdbm/doc/graphqlite.html">
+                                GraphQLite
                             </a>
                         </li>
                                                     <li><a href="http://www.thecodingmachine.com/">TheCodingMachine</a></li>
@@ -230,6 +255,11 @@
                                                                 <li class="">
                         <a href="https://thecodingmachine.github.io/tdbm/doc/install_lumen.html">
                             Install in Lumen
+                        </a>
+                    </li>
+                                                                <li class="">
+                        <a href="https://thecodingmachine.github.io/tdbm/doc/install_symfony.html">
+                            Install in Symfony
                         </a>
                     </li>
                                                                 <li class="">
@@ -319,13 +349,36 @@
                         </a>
                     </li>
                                                                 <li class="">
+                        <a href="https://thecodingmachine.github.io/tdbm/doc/compatibility.html">
+                            Databases compatibility
+                        </a>
+                    </li>
+                                                                <li class="">
                         <a href="https://thecodingmachine.github.io/tdbm/doc/internals.html">
                             TDBM internals
                         </a>
                     </li>
                                                                 <li class="">
+                        <a href="https://thecodingmachine.github.io/tdbm/doc/customizing_code_generation.html">
+                            Customizing code generation
+                        </a>
+                    </li>
+                                                                <li class="">
                         <a href="https://thecodingmachine.github.io/tdbm/doc/faq.html">
                             Frequently asked questions
+                        </a>
+                    </li>
+                                                                <li>
+                        <h4>Integrations and extensions</h4>
+                    </li>
+                                                                <li class="">
+                        <a href="https://thecodingmachine.github.io/tdbm/doc/fluid_schema_builder.html">
+                            Fluid schema builder
+                        </a>
+                    </li>
+                                                                <li class="">
+                        <a href="https://thecodingmachine.github.io/tdbm/doc/graphqlite.html">
+                            GraphQLite
                         </a>
                     </li>
                                     </ul>
@@ -346,7 +399,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <h1>Generating DAOs and beans <small></small></h1>                    <p>TDBM generates PHP files from your database model.</p>
-<div class="alert alert-info">Each time your database model is modified, you must to regenerate those files.</div>
+<div class="alert alert-info">Each time your database model is modified, you have to regenerate those files.</div>
 <p>The way you generate DAOs and beans <strong>depends on the framework you use</strong>.</p>
 <div class="row">
     <div class="col-xs-12 col-sm-6">
@@ -375,10 +428,10 @@
 <div class="alert alert-info">
 TDBM has a feature allowing you to access the database directly through the <code>TDBMService</code>, without generating DAOs or beans.
 This is mostly for testing purpose and is not recommended. Should you need it, you can check the <code>tests/TDBMServiceTest.php</code> file for usage samples.</div>
-<h2 id="the-daos-and-beans-structure">The DAOs and beans structure</h2>
-<p>For each table in your database, TDBM will generate a DAO and a bean. The DAO is the object you will use to
-query the database. Each row of the database will be mapped to a bean object.</p>
-<p>Both DAOs and beans are divided in 2 parts. Let's assume you have a &quot;users&quot; table. TDBM will generate those classes for you:</p>
+<h2 id="the-daos-beans-resultiterators-structure">The DAOs, beans, resultIterators structure</h2>
+<p>For each table in your database, TDBM will generate a DAO, a bean and a resultIterator. The DAO is the object you will use to
+query the database and will return a bean or a resultIterator. Each row of the database will be mapped to a bean object.</p>
+<p>DAOs, beans and resultIterators are divided in 2 parts. Let's assume you have a &quot;users&quot; table. TDBM will generate those classes for you:</p>
 <ul>
 <li><code>AbstractUserDao</code>: the base class that contains methods to access the &quot;users&quot; table. It is generated by TDBM and you should
 never modify this class.</li>
@@ -389,12 +442,16 @@ column of the &quot;users&quot; table. It is generated by TDBM and you should
 never modify this class.</li>
 <li><code>User</code>: this class extends AbstractUser. If you have some custom getters and setters, you should implement them in this class. You can
 edit it as TDBM will never overwrite it.</li>
+<li><code>AbstractUserResultIterator</code>: the resultIterator representing a query on the &quot;users&quot; table. This class contains methods to specify you query.
+It is generated by TDBM and you should never modify this class.</li>
+<li><code>UserResultIterator</code>: this class extends <code>AbstractUserResultIterator</code>. If you have some custom function to narrow down your queries you should implement them in this class. You can
+edit it as TDBM will never overwrite it.</li>
 </ul>
 <p>Let's now have a closer look at the methods that are available in the &quot;UserDao&quot; class:</p>
 <ul>
 <li><code>public function save(User $obj)</code> : saves a <code>User</code> object in database</li>
 <li><code>public function findAll()</code> : returns all users records as an array of <code>User</code> objects.</li>
-<li><code>public function getById($id, $lazyLoading = false)</code> : Get a <code>User</code> specified by its ID (its primary key)</li>
+<li><code>public function getById($id, bool $lazyLoading = false)</code> : Get a <code>User</code> specified by its ID (its primary key)</li>
 <li><code>public function delete($obj, $cascade=false)</code> : Deletes the User passed in parameter. If <code>$cascade</code> is set to true, it will delete all objects linked to <code>$obj</code>.</li>
 </ul>
 <p>The last 2 functions are <em>protected</em>. It means they are designed to be used in the UserDao class.</p>
@@ -422,7 +479,7 @@ it returns only 1 bean object instead of a list of bean objects.</li>
         <footer class="row" id="footer">
             <div class="col-xs-12">
                 Made with <span class="pulse2 glyphicon glyphicon-heart" style="color: red" aria-hidden="true"></span><span class="sr-only">love</span> by <a href="https://www.thecodingmachine.com/"><img src="https://thecodingmachine.github.io/tdbm/img/logo.png" alt="TheCodingMachine"></a> for all open-source lovers
-                <span class="copyright">&copy; 2016 - 2018 <a href="https://www.thecodingmachine.com/">TheCodingMachine</a> - All Rights Reserved</span>
+                <span class="copyright">&copy; 2016 - 2025 <a href="https://www.thecodingmachine.com/">TheCodingMachine</a> - All Rights Reserved</span>
                 Powered by <a href="http://couscous.io/">Couscous</a></span>
             </div>
         </footer>

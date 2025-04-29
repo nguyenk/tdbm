@@ -5,7 +5,7 @@
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <title>Installing TDBM with Mouf | TDBM</title>
+    <title>GraphQL with GraphQLite integration | TDBM</title>
 
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
@@ -113,7 +113,7 @@
                                 Install in Silex
                             </a>
                         </li>
-                                                                                <li class="active visible-xs-block">
+                                                                                <li class=" visible-xs-block">
                             <a href="https://thecodingmachine.github.io/tdbm/doc/install_mouf.html">
                                 Install in Mouf
                             </a>
@@ -267,7 +267,7 @@
                             Install in Silex
                         </a>
                     </li>
-                                                                <li class="active">
+                                                                <li class="">
                         <a href="https://thecodingmachine.github.io/tdbm/doc/install_mouf.html">
                             Install in Mouf
                         </a>
@@ -398,65 +398,139 @@
         <div class="container pt100">
             <div class="row">
                 <div class="col-xs-12">
-                    <h1>Installing TDBM with Mouf <small></small></h1>                    <h2 id="installation-with-mouf">Installation with Mouf</h2>
-<p>Historically, TDBM was the ORM of the Mouf PHP framework. It became a standalone package starting with TDBM 5.0.</p>
-<p>To install TDBM with Mouf:</p>
-<pre><code class="language-bash">$ composer require mouf/mouf ~2.0.0
-$ composer require mouf/database.tdbm ^5.0</code></pre>
-<p>Once composer install is done, access the Mouf user interface (<a href="http://[your">http://[your</a> server]/[your app]/vendor/mouf/mouf).
-In the user interface, run the graphical installer.</p>
-<p>The installer will help you set up the complete environment.</p>
-<p>Mouf integration also offers a nice UI in the &quot;Database&quot; menu that helps you regenerate your DAOs and beans.</p>
-<h2 id="generating-daos-and-beans">Generating DAOs and beans</h2>
-<p>In order to generate the DAOs and beans, the easiest way is to connect to the Mouf user interface, then click on:</p>
-<ul>
-<li><strong>DB</strong> &gt; <strong>TDBM</strong> &gt; <strong>Generate DAOs and beans</strong></li>
-</ul>
-<div class="alert alert-info">This process is automatically done when you install the package, but should you modify the data model, you will need to 
-regenerate the DAOs.</div>
-<p><img src="images/generate_daos.png" alt="Generating DAOs and beans" /></p>
-<p>On this screen, you can choose the namespace that will contain the DAO classes, and the namespace that will contain the Beans. Also,
-a <code>DAOFactory</code> object (that allows easy access to each DAO) will be generated. Let's just keep the default settings and click the
-&quot;Generate DAOs&quot; button.</p>
-<p>That's it, we generated all the DAOs for our database. Let's have a closer look at what was generated.</p>
-<p>Note: if you are using Eclipse, we strongly recommend you to refresh your project, to load the new classes.</p>
-<h2 id="accessing-daos">Accessing DAOs</h2>
-<p>TDBM will automatically generate in Mouf <strong>one instance per DAO</strong>.</p>
-<p>So if you have a <code>UserDao</code> class, you will find in Mouf a <code>userDao</code> instance.</p>
-<p>Therefore, you can access it using:</p>
-<pre><code class="language-php">$userDao = Mouf::getUserDao();
+                    <h1>GraphQL with GraphQLite integration <small></small></h1>                    <p>TDBM offers a native integration with <a href="https://graphqlite.thecodingmachine.io/">GraphQLite</a></p>
+<p>GraphQLite is a PHP library to easily develop a GraphQL library. GraphQLite core principle is
+to declare GraphQL types using PHP annotations.</p>
+<p>For instance:</p>
+<pre><code class="language-php">/**
+ * @Type()
+ */
+class Product
+{
+    // ...
 
-$user = $userDao-&gt;getById(42);
-echo $user-&gt;getLogin();</code></pre>
-<p>But of course, we all know you should not use the <code>Mouf::getXXX</code> methods and instead inject the DAOs you need in your services' or controllers' constructors!</p>
-<h2 id="about-tdbm-install-advanced">About TDBM install (advanced)</h2>
-<h3 id="the">The <em>tdbmService</em> instance</h3>
-<p>During installation, TDBM will generate a &quot;tdbmService&quot; instance.</p>
-<p><img src="images/tdbm_service_instance.png" alt="" /></p>
-<p>As you can see, this instance only relies on a &quot;tdbmConfiguration&quot; instance.</p>
-<p><img src="images/tdbm_configuration_instance.png" alt="" /></p>
-<p>This instance is already configured, but should you need to modify any configuration, you should modify this very instance.</p>
-<p>In particular, it is the place where you can customize:</p>
-<ul>
-<li>the database connection</li>
-<li>the cache used by default</li>
-<li>the <a href="configuring_naming.html">&quot;naming strategy&quot;</a></li>
-</ul>
-<h3 id="setting-up-the-cache-service">Setting up the cache service</h3>
-<p>By default, Doctrine's <code>ApcuCache</code> service is used if available and will fallback to <code>PhpFileCache</code> otherwise.
-If the Mouf's <code>DEBUG</code> configuration is set to <code>true</code>, the cache is disabled.</p>
-<p>TDBM requires a cache in order to store database related data. Indeed TDBM stores in cache the structure of the database,
-and relies heavily on declared foreign keys to perform the &quot;smartest&quot; queries. Instead of querying the database for those
-foreign keys, it will query them once, and put them in cache. This means that if you modify the database model, you will
-need to purge the TDBM cache.</p>
-<p>TDBM relies on Doctrine cache system. You are free to choose the best one amongst the Doctrine services
-implementing the <code>Cache</code> interface.</p>
-<h2 id="next-step">Next step</h2>
-<p>Let's now learn how to <a href="quickstart.html">access the database</a>.</p>
+    /**
+     * @Field()
+     */
+    public function getName(): string
+    {
+        return $this-&gt;name;
+    }
+}</code></pre>
+<p>However, in TDBM, the classes and getters are generated by TDBM itself. The getters are in the
+generated abstract classes and you cannot edit those files (as they are overwritten by TDBM each
+time you generate the beans and DAOs).</p>
+<p>TDBM-GraphQL is a library that can read annotations <strong>from the database model</strong> and forward those
+annotations to the PHP classes.</p>
+<p>You put <code>@Type</code> or <code>@Field</code> annotations in your database tables and columns and TDBM will generate
+these annotations in the beans and DAOs.</p>
+<h2 id="installation">Installation</h2>
+<h3 id="installation-for-symfony">Installation for Symfony</h3>
+<p>Open a terminal in your current project directory and run:</p>
+<pre><code class="language-bash">$ composer require thecodingmachine/tdbm-graphql-bundle</code></pre>
+<p>If you are using Flex, you are done. Jump to the <a href="#annotating-your-db-model">Annotating your DB model</a> section.</p>
+<p>Not using Flex? Enable the library by adding it to the list of registered bundles in the <code>config/bundles.php</code> file:</p>
+<p><strong>config/bundles.php</strong></p>
+<pre><code class="language-php">return [
+    // ...
+    'TheCodingMachine\\Tdbm\Graphql\\Bundle\\TheCodingMachineTdbmGraphqlBundle' =&gt; ['all' =&gt; true],
+}</code></pre>
+<h3 id="configuration">Configuration</h3>
+<div class="alert alert-warning">Configuration is only needed for tdbm-graphql-bundle version 3.x.
+Starting with tdbm-graphql-bundle v4, there is no configuration necessary, you can completely skip this part.</div>
+<p>The parameters are stored in the <code>config/packages/tdbm-graphql.yaml</code> file.</p>
+<p>By default, generated types will go into <code>App\Types</code>.</p>
+<div class="alert alert-warning">
+If your default namespace for your application is not <code>App</code>, you should open this <code>tdbm-graphql.yaml</code> file and customize the 
+<code>tdbm-graphl.type_namespace</code> and <code>tdbm-graphl.generated_type_namespace</code> (optionnal) to match your application namespace.
+</div>
+<p>Here is a configuration file with all available options:</p>
+<p><strong>config/packages/tdbm-graphql.yaml</strong></p>
+<pre><code class="language-yaml">tdbm-graphql:
+    type_namespace: App\Types
+    generated_type_namespace: App\Types\Generated</code></pre>
+<h3 id="manual-installation">Manual installation</h3>
+<p>Open a terminal in your current project directory and run:</p>
+<pre><code class="language-bash">$ composer require thecodingmachine/tdbm-graphql</code></pre>
+<p>The tdbm-graphql package provides a <code>GraphQLTypeAnnotator</code>. This class alters the way TDBM generates
+the beans and DAOs.</p>
+<p>You must create an instance of this class and register it in the TDBM configuration:</p>
+<pre><code class="language-php">use TheCodingMachine\Tdbm\GraphQL\GraphQLTypeAnnotator;
+use TheCodingMachine\TDBM\Configuration;
+
+// The parameter passed is the namespace in which the classes will be generated
+$annotator = new GraphQLTypeAnnotator('App\\Types\\');
+$configuration = new Configuration(
+    'App\\Beans',
+    'App\\DAOs',
+    $connection,
+    null,
+    new ArrayCache(),
+    null,
+    null,
+    [ $annotator ], // The annotator must be passed to the $generatorListeners parameter
+    null,
+    [ $annotator ] // and also to the $codeGeneratorListeners parameter
+);</code></pre>
+<h2 id="annotating-your-db-model">Annotating your DB model</h2>
+<p>In order to expose a bean as a GraphQL type, you must annotate the database model.</p>
+<p>You can use the same annotations as in GraphQLite (but you must make sure they are fully qualified).</p>
+<p>For each bean, you must put the <code>@Type</code> annotation in the class comment and the <code>@Field</code> annotation
+in each column you want to expose.</p>
+<pre><code class="language-sql">ALTER TABLE users COMMENT '@TheCodingMachine\\GraphQLite\\Annotations\\Type';
+ALTER TABLE users MODIFY COLUMN `name` VARCHAR(255) NOT NULL COMMENT '@TheCodingMachine\\GraphQLite\\Annotations\\Field';</code></pre>
+<p>Adding comments on each column can be tedious. We highly recommend to use
+the <a href="fluid_schema_builder.html">TDBM Fluid Schema Builder</a> to create the schema instead.
+The library provides a number of helpers to create the annotations for you:</p>
+<pre><code class="language-php">$db-&gt;table('users')
+   -&gt;column('name')-&gt;string(50)-&gt;graphqlField();
+   // The graphqlField() method will add the @Field annotation on the column AND the @Type annotation on the class at once.</code></pre>
+<p>Once your data model is commented with the annotations, you just have to regenerate the TDBM DAOs and beans:</p>
+<pre><code class="language-bash">bin/console tdbm:generate</code></pre>
+<p>You can check the getters in the generated beans, they should be annotated with the GraphQLite's <code>@Field</code> annotation.</p>
+<h2 id="additional-annotations-supported">Additional annotations supported</h2>
+<p>TDBM-GraphQL supports additional annotations to manage the fields' visibility:</p>
+<pre><code class="language-sql">ALTER TABLE users MODIFY COLUMN `name` VARCHAR(255) NOT NULL COMMENT '
+  @TheCodingMachine\\GraphQLite\\Annotations\\Field
+  @TheCodingMachine\\GraphQLite\\Annotations\\Logged
+  @TheCodingMachine\\GraphQLite\\Annotations\\Right("CAN_SEE_NAME")
+  @TheCodingMachine\\GraphQLite\\Annotations\\FailWith(null)
+';</code></pre>
+<p>You can find more about <a href="https://graphqlite.thecodingmachine.io/docs/authentication_authorization">these security annotations in the GraphQLite documentation</a>.</p>
+<p>You can also create these annotations using the TDBM Fluid Schema Builder.</p>
+<pre><code class="language-php">$db-&gt;table('users')
+   -&gt;column('name')-&gt;string(50)-&gt;graphqlField()
+   -&gt;logged()-&gt;right('CAN_SEE_NAME')-&gt;failWith(null);</code></pre>
+<h2 id="use-your-beans-as-input-types">Use your beans as input types</h2>
+<p>TDBM will automatically annotate the <code>xxxDao::getById()</code> method with a <code>@Factory</code> annotation.
+As a result, you can directly inject you beans as arguments in your GraphQL queries.</p>
+<p>For instance:</p>
+<pre><code class="language-php">class ProductController
+{
+    // ...
+
+    /**
+     * @Query()
+     * @return ProductResultIterator
+     */
+    public function getProducts(Category $category): array
+    {
+        // ...
+    }
+}</code></pre>
+<p>Assuming &quot;Category&quot; is a bean, TDBM-GraphQL will automatically fetch the bean from the database and populate the <code>$category</code>
+argument with it.</p>
+<p>Your GraphQL query will look like this:</p>
+<pre><code class="language-graphql">{
+    products(category: { id: 42 }) {
+        id
+        name
+    }
+}</code></pre>
 
                     <p class="fork-and-edit">
                         Found a typo? Something is wrong in this documentation? Just
-                        <a href="https://github.com/thecodingmachine/tdbm/blob/master/doc/install_mouf.md">fork and edit it</a>!
+                        <a href="https://github.com/thecodingmachine/tdbm/blob/master/doc/graphqlite.md">fork and edit it</a>!
                     </p>
                 </div>
             </div>

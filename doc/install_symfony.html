@@ -5,7 +5,7 @@
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <title>Installing TDBM with Mouf | TDBM</title>
+    <title>Installing TDBM in Symfony | TDBM</title>
 
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
@@ -103,7 +103,7 @@
                                 Install in Lumen
                             </a>
                         </li>
-                                                                                <li class=" visible-xs-block">
+                                                                                <li class="active visible-xs-block">
                             <a href="https://thecodingmachine.github.io/tdbm/doc/install_symfony.html">
                                 Install in Symfony
                             </a>
@@ -113,7 +113,7 @@
                                 Install in Silex
                             </a>
                         </li>
-                                                                                <li class="active visible-xs-block">
+                                                                                <li class=" visible-xs-block">
                             <a href="https://thecodingmachine.github.io/tdbm/doc/install_mouf.html">
                                 Install in Mouf
                             </a>
@@ -257,7 +257,7 @@
                             Install in Lumen
                         </a>
                     </li>
-                                                                <li class="">
+                                                                <li class="active">
                         <a href="https://thecodingmachine.github.io/tdbm/doc/install_symfony.html">
                             Install in Symfony
                         </a>
@@ -267,7 +267,7 @@
                             Install in Silex
                         </a>
                     </li>
-                                                                <li class="active">
+                                                                <li class="">
                         <a href="https://thecodingmachine.github.io/tdbm/doc/install_mouf.html">
                             Install in Mouf
                         </a>
@@ -398,65 +398,131 @@
         <div class="container pt100">
             <div class="row">
                 <div class="col-xs-12">
-                    <h1>Installing TDBM with Mouf <small></small></h1>                    <h2 id="installation-with-mouf">Installation with Mouf</h2>
-<p>Historically, TDBM was the ORM of the Mouf PHP framework. It became a standalone package starting with TDBM 5.0.</p>
-<p>To install TDBM with Mouf:</p>
-<pre><code class="language-bash">$ composer require mouf/mouf ~2.0.0
-$ composer require mouf/database.tdbm ^5.0</code></pre>
-<p>Once composer install is done, access the Mouf user interface (<a href="http://[your">http://[your</a> server]/[your app]/vendor/mouf/mouf).
-In the user interface, run the graphical installer.</p>
-<p>The installer will help you set up the complete environment.</p>
-<p>Mouf integration also offers a nice UI in the &quot;Database&quot; menu that helps you regenerate your DAOs and beans.</p>
-<h2 id="generating-daos-and-beans">Generating DAOs and beans</h2>
-<p>In order to generate the DAOs and beans, the easiest way is to connect to the Mouf user interface, then click on:</p>
-<ul>
-<li><strong>DB</strong> &gt; <strong>TDBM</strong> &gt; <strong>Generate DAOs and beans</strong></li>
-</ul>
-<div class="alert alert-info">This process is automatically done when you install the package, but should you modify the data model, you will need to 
-regenerate the DAOs.</div>
-<p><img src="images/generate_daos.png" alt="Generating DAOs and beans" /></p>
-<p>On this screen, you can choose the namespace that will contain the DAO classes, and the namespace that will contain the Beans. Also,
-a <code>DAOFactory</code> object (that allows easy access to each DAO) will be generated. Let's just keep the default settings and click the
-&quot;Generate DAOs&quot; button.</p>
-<p>That's it, we generated all the DAOs for our database. Let's have a closer look at what was generated.</p>
-<p>Note: if you are using Eclipse, we strongly recommend you to refresh your project, to load the new classes.</p>
+                    <h1>Installing TDBM in Symfony <small></small></h1>                    <h2 id="installation">Installation</h2>
+<p>To install TDBM in Symfony 4.x:</p>
+<pre><code class="language-bash">$ composer config extra.symfony.allow-contrib true
+$ composer require thecodingmachine/tdbm-bundle ^5.1</code></pre>
+<div class="alert alert-info">
+TDBM requires Doctrine DBAL to be available. In Symfony 4+, DBAL is available as a separated bundle.
+Therefore, installing the TDBM bundle will install Doctrine ORM bundle a dependency. Nothing to worry 
+about, this is unfortunately an expected behaviour (<a href="https://github.com/symfony/recipes/issues/218">more details</a>)
+</div>
+<h3 id="configuration">Configuration</h3>
+<p>The database connection is configured like any other Symfony application, using the <code>DATABASE_URL</code> environment variable.</p>
+<p>The rest of the parameters are stored in the <code>config/packages/tdbm.yaml</code> file.</p>
+<p>By default, beans will go into <code>App\Beans</code> and DAOs will go into <code>App\Daos</code>.</p>
+<div class="alert alert-warning">
+If your default namespace for your application is not <code>App</code>, you should open this <code>tdbm.yaml</code> file and customize the 
+<code>tdbm.bean_namespace</code> and <code>tdbm.dao_namespace</code> to match your application namespace.
+</div>
+<p>You can also use the <code>config/packages/tdbm.yaml</code> file to customize the naming of beans and DAOs.</p>
+<p>Here is a configuration file with all available options:</p>
+<p><strong>config/packages/tdbm.yaml</strong></p>
+<pre><code class="language-yaml">tdbm:
+    bean_namespace: App\Beans
+    dao_namespace: App\Daos
+    # The naming section is completely optional
+    naming:
+        bean_prefix: ""
+        bean_suffix: ""
+        base_bean_prefix: Abstract
+        base_bean_suffix: ""
+        dao_prefix: ""
+        dao_suffix: Dao
+        base_dao_prefix: Abstract
+        base_dao_suffix: Dao
+        # Exceptions are used to transform a table name (the key) into a bean name (the value)
+        # Very useful if your database table names are not in english 
+        # (as TDBM will try to turn plural table names into singular bean names)
+        exceptions:
+            chevaux: Cheval</code></pre>
+<h2 id="generating-beans-and-daos">Generating beans and DAOs</h2>
+<p>When installation is done, you need to generate DAOs and beans from your data model.</p>
+<p>Run the following command:</p>
+<pre><code class="language-bash">bin/console tdbm:generate</code></pre>
+<div class="alert alert-danger">You must run this command after the installation of the package, and <strong>each time you run a migration</strong> (i.e. each time the database model changes).</div>
 <h2 id="accessing-daos">Accessing DAOs</h2>
-<p>TDBM will automatically generate in Mouf <strong>one instance per DAO</strong>.</p>
-<p>So if you have a <code>UserDao</code> class, you will find in Mouf a <code>userDao</code> instance.</p>
-<p>Therefore, you can access it using:</p>
-<pre><code class="language-php">$userDao = Mouf::getUserDao();
+<p>Because Symfony 4 comes by default with auto-wiring of services, you can simply inject the generated DAOs in your
+controllers or services to use them.</p>
+<pre><code class="language-php">namespace App\Controller;
 
-$user = $userDao-&gt;getById(42);
-echo $user-&gt;getLogin();</code></pre>
-<p>But of course, we all know you should not use the <code>Mouf::getXXX</code> methods and instead inject the DAOs you need in your services' or controllers' constructors!</p>
-<h2 id="about-tdbm-install-advanced">About TDBM install (advanced)</h2>
-<h3 id="the">The <em>tdbmService</em> instance</h3>
-<p>During installation, TDBM will generate a &quot;tdbmService&quot; instance.</p>
-<p><img src="images/tdbm_service_instance.png" alt="" /></p>
-<p>As you can see, this instance only relies on a &quot;tdbmConfiguration&quot; instance.</p>
-<p><img src="images/tdbm_configuration_instance.png" alt="" /></p>
-<p>This instance is already configured, but should you need to modify any configuration, you should modify this very instance.</p>
-<p>In particular, it is the place where you can customize:</p>
-<ul>
-<li>the database connection</li>
-<li>the cache used by default</li>
-<li>the <a href="configuring_naming.html">&quot;naming strategy&quot;</a></li>
-</ul>
-<h3 id="setting-up-the-cache-service">Setting up the cache service</h3>
-<p>By default, Doctrine's <code>ApcuCache</code> service is used if available and will fallback to <code>PhpFileCache</code> otherwise.
-If the Mouf's <code>DEBUG</code> configuration is set to <code>true</code>, the cache is disabled.</p>
-<p>TDBM requires a cache in order to store database related data. Indeed TDBM stores in cache the structure of the database,
-and relies heavily on declared foreign keys to perform the &quot;smartest&quot; queries. Instead of querying the database for those
-foreign keys, it will query them once, and put them in cache. This means that if you modify the database model, you will
-need to purge the TDBM cache.</p>
-<p>TDBM relies on Doctrine cache system. You are free to choose the best one amongst the Doctrine services
-implementing the <code>Cache</code> interface.</p>
+use App\Daos\UserDao;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+class TestController extends Controller
+{
+
+    /**
+     * @var UserDao
+     */
+    private $userDao;
+
+    public function __construct(UserDao $userDao)
+    {
+
+        $this-&gt;userDao = $userDao;
+    }
+
+    /**
+     * @Route("/test", name="test")
+     */
+    public function index()
+    {
+        return $this-&gt;json($this-&gt;userDao-&gt;findAll());
+   }
+}</code></pre>
+<h3 id="supporting-several-databases">Supporting several databases</h3>
+<p><small>TDBM 5.2+</small></p>
+<p>It is possible to plug TDBM to several databases.
+In this case, you will first want to declare several database connections in DBAL.</p>
+<p>For instance:</p>
+<p><strong>config/packages/doctrine.yaml</strong></p>
+<pre><code class="language-yaml">doctrine:
+    dbal:
+        default_connection: default
+        connections:
+            default:
+                # configure these for your database server
+                url: '%env(resolve:DATABASE_URL)%'
+                driver: 'pdo_mysql'
+                server_version: '5.7'
+                charset: utf8mb4
+            customer:
+                # configure these for your database server
+                url: '%env(resolve:DATABASE_CUSTOMER_URL)%'
+                driver: 'pdo_mysql'
+                server_version: '5.7'
+                charset: utf8mb4</code></pre>
+<p>Then, in TDBM, you will use these connections.</p>
+<p><strong>config/packages/tdbm.yaml</strong></p>
+<pre><code class="language-yaml">tdbm:
+    databases:
+        default:
+            bean_namespace: App\Beans
+            dao_namespace: App\Daos
+        customer:
+            connection: doctrine.dbal.customer_connection
+            bean_namespace: App\Customer\Beans
+            dao_namespace: App\Customer\Daos</code></pre>
+<p>Notice how the &quot;connection&quot; key is pointing to the instance of DBAL connection you are targeting.</p>
+<p>Last but not least, add your Beans and Daos in the exclude list of Symfony:</p>
+<p><strong>config/services.yaml</strong></p>
+<pre><code class="language-yaml">App\:
+    resource: '../src/*'
+    exclude:
+        - '../src/{Beans,Daos}'
+        - '../src/Customer/{Beans,Daos}'</code></pre>
+<p>Indeed, Symfony overrides the TDBM bundle auto-wiring in its container; the DAOs not using the DBAL default connection won't be able to use the correct DBAL connection otherwise.</p>
+<p>Now, when you want to generate beans and Daos, you will have to target the correct database:</p>
+<pre><code class="language-bash">$ bin/console tdbm:generate           # targets the default database
+$ bin/console tdbm:generate:customer  # targets the "customer" database</code></pre>
 <h2 id="next-step">Next step</h2>
 <p>Let's now learn how to <a href="quickstart.html">access the database</a>.</p>
 
                     <p class="fork-and-edit">
                         Found a typo? Something is wrong in this documentation? Just
-                        <a href="https://github.com/thecodingmachine/tdbm/blob/master/doc/install_mouf.md">fork and edit it</a>!
+                        <a href="https://github.com/thecodingmachine/tdbm/blob/master/doc/install_symfony.md">fork and edit it</a>!
                     </p>
                 </div>
             </div>

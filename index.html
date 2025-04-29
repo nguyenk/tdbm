@@ -104,6 +104,11 @@
                             </a>
                         </li>
                                                                                 <li class=" visible-xs-block">
+                            <a href="https://thecodingmachine.github.io/tdbm/doc/install_symfony.html">
+                                Install in Symfony
+                            </a>
+                        </li>
+                                                                                <li class=" visible-xs-block">
                             <a href="https://thecodingmachine.github.io/tdbm/doc/install_silex.html">
                                 Install in Silex
                             </a>
@@ -184,13 +189,33 @@
                             </a>
                         </li>
                                                                                 <li class=" visible-xs-block">
+                            <a href="https://thecodingmachine.github.io/tdbm/doc/compatibility.html">
+                                Databases compatibility
+                            </a>
+                        </li>
+                                                                                <li class=" visible-xs-block">
                             <a href="https://thecodingmachine.github.io/tdbm/doc/internals.html">
                                 TDBM internals
                             </a>
                         </li>
                                                                                 <li class=" visible-xs-block">
+                            <a href="https://thecodingmachine.github.io/tdbm/doc/customizing_code_generation.html">
+                                Customizing code generation
+                            </a>
+                        </li>
+                                                                                <li class=" visible-xs-block">
                             <a href="https://thecodingmachine.github.io/tdbm/doc/faq.html">
                                 Frequently asked questions
+                            </a>
+                        </li>
+                                                                                                                    <li class=" visible-xs-block">
+                            <a href="https://thecodingmachine.github.io/tdbm/doc/fluid_schema_builder.html">
+                                Fluid schema builder
+                            </a>
+                        </li>
+                                                                                <li class=" visible-xs-block">
+                            <a href="https://thecodingmachine.github.io/tdbm/doc/graphqlite.html">
+                                GraphQLite
                             </a>
                         </li>
                                                     <li><a href="http://www.thecodingmachine.com/">TheCodingMachine</a></li>
@@ -230,6 +255,11 @@
                                                                 <li class="">
                         <a href="https://thecodingmachine.github.io/tdbm/doc/install_lumen.html">
                             Install in Lumen
+                        </a>
+                    </li>
+                                                                <li class="">
+                        <a href="https://thecodingmachine.github.io/tdbm/doc/install_symfony.html">
+                            Install in Symfony
                         </a>
                     </li>
                                                                 <li class="">
@@ -319,13 +349,36 @@
                         </a>
                     </li>
                                                                 <li class="">
+                        <a href="https://thecodingmachine.github.io/tdbm/doc/compatibility.html">
+                            Databases compatibility
+                        </a>
+                    </li>
+                                                                <li class="">
                         <a href="https://thecodingmachine.github.io/tdbm/doc/internals.html">
                             TDBM internals
                         </a>
                     </li>
                                                                 <li class="">
+                        <a href="https://thecodingmachine.github.io/tdbm/doc/customizing_code_generation.html">
+                            Customizing code generation
+                        </a>
+                    </li>
+                                                                <li class="">
                         <a href="https://thecodingmachine.github.io/tdbm/doc/faq.html">
                             Frequently asked questions
+                        </a>
+                    </li>
+                                                                <li>
+                        <h4>Integrations and extensions</h4>
+                    </li>
+                                                                <li class="">
+                        <a href="https://thecodingmachine.github.io/tdbm/doc/fluid_schema_builder.html">
+                            Fluid schema builder
+                        </a>
+                    </li>
+                                                                <li class="">
+                        <a href="https://thecodingmachine.github.io/tdbm/doc/graphqlite.html">
+                            GraphQLite
                         </a>
                     </li>
                                     </ul>
@@ -346,7 +399,8 @@
             <div class="row">
                 <div class="col-xs-12">
                                         <div class="text-center">
-<img src="doc/images/logo_full.png" alt="logo"></div>
+<img src="doc/images/logo_full.png" alt="logo">
+</div>
 <h1 id="the-database-machine">The DataBase Machine</h1>
 <p><a href="https://packagist.org/packages/thecodingmachine/tdbm"><img src="https://poser.pugx.org/thecodingmachine/tdbm/v/stable" alt="Latest Stable Version" /></a>
 <a href="https://packagist.org/packages/thecodingmachine/tdbm"><img src="https://poser.pugx.org/thecodingmachine/tdbm/downloads" alt="Total Downloads" /></a>
@@ -364,30 +418,32 @@
 <p>TDBM is an opiniated ORM. It will not suit everybody and all needs. Here is what you need to know.</p>
 <h2 id="tdbm-starts-with-your-database-model-and-generates-php-files">TDBM starts with your database model and generates PHP files</h2>
 <p>TDBM is a &quot;database first&quot; ORM. Everything starts from your database. TDBM is very good at understanding your database model and the intent behind it. It will generate PHP objects mapping your model.</p>
+<!-- https://docs.google.com/drawings/d/1ZdwVgk5w1oFXnVDnDuK6d9uu_zXxNuuzYlyK409zVBE -->
 <p><img src="doc/images/tdbm_generates_php_classes.png" alt="TDBM generates your PHP classes" /></p>
 <p>TDBM <strong>understands your database model</strong>. From it, it will generate PHP classes that will help you access your database:</p>
 <ul>
 <li><em>DAOs</em> that are services helping you access a given table</li>
-<li>and <em>Beans</em> that are classes representing a row in your database.</li>
+<li><em>Beans</em> that are classes representing a row in your database.</li>
+<li><em>ResultIterators</em> that are classes representing a query result.</li>
 </ul>
 <pre><code class="language-php">// Daos are used to query the database
 $user = $userDao-&gt;getById(42);
 
 // Beans have getters and setters for each column
 $login = $user-&gt;getLogin();</code></pre>
-<p>Because PHP objects are generated (no magic properties), you get a nice <strong>autocompletion</strong> in your favorite IDE (PHPStorm, Eclipse PDT, Netbeans...).</p>
+<p>Because PHP objects are generated (no magic properties), you get a nice <strong>autocompletion</strong> in your favorite IDE (PHPStorm, Eclipse PDT, NetBeans...).</p>
 <h2 id="tdbm-is-really-good-at-understanding-your-database-model">TDBM is really good at understanding your database model</h2>
 <p>TDBM has one of <strong>the most powerful database model analyzer</strong> out there.</p>
 <h3 id="tdbm-relies-on-your-foreign-keys">TDBM relies on your foreign keys</h3>
 <p>TDBM analyzes your foreign key and turns them into getters and setters.</p>
 <p><img src="doc/images/users_countries.png" alt="One to many" /></p>
 <pre><code class="language-php">// Let's get the name of the country of the current user
-$user-&gt;getCountry()-&gt;getName();
+$user-&gt;getCountry()-&gt;getLabel();
 
 // Let's get all users in a given country
 $users = $country-&gt;getUsers();</code></pre>
-<h3 id="tdbm-can-detect-pivot-table">TDBM can detect pivot table</h3>
-<p>TDBM can automatically detect pivot tables to generate <strong>many to many relationships</strong>.</p>
+<h3 id="tdbm-can-detect-association-tables">TDBM can detect association tables</h3>
+<p>TDBM can automatically detect association tables to generate <strong>many to many relationships</strong>.</p>
 <p><img src="doc/images/many_to_many.png" alt="Many to many" /></p>
 <pre><code class="language-php">// Let's directly access the list of roles from a user
 $roles = $user-&gt;getRoles();
@@ -453,7 +509,7 @@ For instance, TDBM has a <strong>unique feature that guesses jointures for you</
         <footer class="row" id="footer">
             <div class="col-xs-12">
                 Made with <span class="pulse2 glyphicon glyphicon-heart" style="color: red" aria-hidden="true"></span><span class="sr-only">love</span> by <a href="https://www.thecodingmachine.com/"><img src="https://thecodingmachine.github.io/tdbm/img/logo.png" alt="TheCodingMachine"></a> for all open-source lovers
-                <span class="copyright">&copy; 2016 - 2018 <a href="https://www.thecodingmachine.com/">TheCodingMachine</a> - All Rights Reserved</span>
+                <span class="copyright">&copy; 2016 - 2025 <a href="https://www.thecodingmachine.com/">TheCodingMachine</a> - All Rights Reserved</span>
                 Powered by <a href="http://couscous.io/">Couscous</a></span>
             </div>
         </footer>
